@@ -1,9 +1,11 @@
 # Differentiable Morphing
 
-### Image morphing without reference points by applying warp maps and optimizing over them.  
+### Image morphing without reference points by applying warp maps and optimizing over them.
+
 Differentiable Morphing is machine learning algorithm that can morph any two images without reference points. It called "differentiable morphing" because neural network here is not used in traditional data to label mapping sense, but as an easy way to solve optimization problem where one image is mapped to another via warp maps that are found by gradient descent. So after maps are found there is no need for the network itself.
 
 ## Results
+
 ![example 1](images/example_1.gif)
 ![example 2](images/example_2.gif)
 ![example 3](images/example_3.gif)
@@ -25,10 +27,12 @@ Use the program:
 ```bash
 morph.py -s images/img_1.jpg -t images/img_2.jpg
 ```
+
 -s Source file  
--t Target file  
+-t Target file
 
 Unnecessary parameters:  
+-o Name of output mp4 (defaults to `morph`)
 -e Number of epochs to train maps on training stage  
 -a Addition map multiplier  
 -m Multiplication map multiplier  
@@ -37,20 +41,19 @@ Unnecessary parameters:
 
 ## Idea
 
-Suppose we want to produce one image from another in a way that we use as much useful information as possible, so if two given images share any similarities between them we make use of these similarities. 
+Suppose we want to produce one image from another in a way that we use as much useful information as possible, so if two given images share any similarities between them we make use of these similarities.
 
-![toy_example](images/toy_example.jpg)  
+![toy_example](images/toy_example.jpg)
 
-After several trials I found out that the best way to achieve such effect is to use following formula.  
+After several trials I found out that the best way to achieve such effect is to use following formula.
 
-![formula](images/formula.jpg)  
+![formula](images/formula.jpg)
 
-Here "Mult map" removes unnecessary parts of an image and shifts color balance, "Add map" creates new colors that are not present in original image and "Warp map" distort an image in some way to reproduce shifting, rotation and scaling of objects. W operation is [dense_image_warp](https://www.tensorflow.org/addons/api_docs/python/tfa/image/dense_image_warp) method that present in tensorflow and usually used for optical flow estimation tasks. 
+Here "Mult map" removes unnecessary parts of an image and shifts color balance, "Add map" creates new colors that are not present in original image and "Warp map" distort an image in some way to reproduce shifting, rotation and scaling of objects. W operation is [dense_image_warp](https://www.tensorflow.org/addons/api_docs/python/tfa/image/dense_image_warp) method that present in tensorflow and usually used for optical flow estimation tasks.
 
-All maps are found by gradient descent using very simple convolution network. Now, by applying alpha scaling parameter to every map we will get smooth transition from one image to another without any loss of useful data (at least for the given toy example).  
+All maps are found by gradient descent using very simple convolution network. Now, by applying alpha scaling parameter to every map we will get smooth transition from one image to another without any loss of useful data (at least for the given toy example).
 
-![transition](images/transition.jpg) 
-
+![transition](images/transition.jpg)
 
 ## Thoughts
 
